@@ -49,7 +49,7 @@ namespace ERS
         public Player(string newName, Point newLocation)
         {
             name = newName;
-            hand = new CardStack(newLocation.X, newLocation.Y, Layout.Deck);
+            hand = new CardStack(newLocation.X, newLocation.Y, Layout.Hand);
             tableCards = new CardStack(newLocation.X + TABLECARDS_OFFSET, newLocation.Y, Layout.Hand);
             genderStr = "their";
         }
@@ -57,7 +57,7 @@ namespace ERS
         public Player(string newName, bool isMale, Point newLocation)
         {
             name = newName;
-            hand = new CardStack(newLocation.X, newLocation.Y, Layout.Deck);
+            hand = new CardStack(newLocation.X, newLocation.Y, Layout.Hand);
             tableCards = new CardStack(newLocation.X + TABLECARDS_OFFSET, newLocation.Y, Layout.Hand);
             if (isMale)
                 genderStr = "his";
@@ -69,7 +69,7 @@ namespace ERS
             if (GameController.debug)
                 hand.Layout = Layout.Hand;
             else
-                hand.Layout = Layout.Deck;
+                hand.Layout = Layout.Hand;
             hand.Update(mouse, oldMouse);
             tableCards.Update(mouse, oldMouse);
 

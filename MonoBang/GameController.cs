@@ -56,9 +56,9 @@ namespace ERS
             deck = new CardStack(BangGame.SCREEN_WIDTH - 105, 180, true);
             discardPile = new CardStack(BangGame.SCREEN_WIDTH - 105, 280);
             
-            players = new Player[] { new CPU("Calamity Janet", false, new Point(200, 40)), new CPU("Willy the Kid", true, new Point(200, 120)), 
-                new CPU("Black Jack", true, new Point(200, 200)), new CPU("Lucky Duke", true, new Point(200, 280)), new CPU("Rose Doolan", false, new Point(200, 360)),
-                new CPU("Paul Regret", true, new Point(200, 440)), new Human("El Gringo", true, new Point(200, 540)) };
+            players = new Player[] { new Human("Calamity Janet", false, new Point(200, 40)), new CPU("Willy the Kid", true, new Point(200, 140)), 
+                new CPU("Black Jack", true, new Point(200, 240)), new CPU("Lucky Duke", true, new Point(200, 340)), new CPU("Rose Doolan", false, new Point(200, 440)),
+                new CPU("Paul Regret", true, new Point(200, 540)), new CPU("El Gringo", true, new Point(200, 640)) };
 
             RestartGame();
         }
@@ -714,7 +714,7 @@ namespace ERS
             for (int i = 0; i < players.Length; i++)
             {
                 string playerStr = (sheriff == players[i]) ? "Sheriff " + players[i].Name : players[i].Name;
-                players[i].Hand.DrawDeck(debug ? CardState.FaceUp : CardState.FaceDown);
+                players[i].Hand.DrawDeck(debug || players[i] is Human ? CardState.FaceUp : CardState.FaceDown);
                 players[i].TableCards.DrawDeck(CardState.FaceUp);
                 MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, playerStr, new Vector2(players[i].Hand.Location.X - 140, players[i].Hand.Location.Y - 4), Color.White);
                 int distAway = players[whosTurn].GetDistanceAway(players, players[i]);
