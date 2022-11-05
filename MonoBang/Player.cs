@@ -25,7 +25,7 @@ namespace ERS
         protected string genderStr; //Gender of the player, set to 'their' if neither.
                                     //The role of the Player
         protected CharacterRole role = CharacterRole.None;
-
+        protected bool playerSelected;
 
         public int MaxLife { get { return maxLife; } set { maxLife = value; } }
         public int Life { get { return life; } set { life = value; } }
@@ -43,6 +43,7 @@ namespace ERS
         public bool FinishedDeathFunctions { get { return deathFunctionsFinished; } set { deathFunctionsFinished = value; } }
 
         public bool HasThought { get { return hasThought; } set { hasThought = value; } }
+        public bool PlayerSelected { get { return playerSelected; } set { playerSelected = value; } }
 
         public static int TABLECARDS_OFFSET = 500;//360;
 
@@ -52,6 +53,7 @@ namespace ERS
             hand = new CardStack(newLocation.X, newLocation.Y, Layout.Hand);
             tableCards = new CardStack(newLocation.X + TABLECARDS_OFFSET, newLocation.Y, Layout.Hand);
             genderStr = "their";
+            playerSelected = false;
         }
 
         public Player(string newName, bool isMale, Point newLocation)
@@ -62,6 +64,7 @@ namespace ERS
             if (isMale)
                 genderStr = "his";
             else genderStr = "her";
+            playerSelected = false;
         }
 
         public void Update(MouseState mouse, MouseState oldMouse)

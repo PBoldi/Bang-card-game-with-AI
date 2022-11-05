@@ -125,7 +125,6 @@ namespace ERS
             else
                 nextPlayerCanBegin = false;
            
-
             if (keyboard.IsKeyDown(Keys.P) && oldKeyboard.IsKeyUp(Keys.P) || (mouse.X >= 441 && mouse.X < 454 && mouse.Y >= 2 && mouse.Y < 15 &&
                 mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released))
                 paused = !paused;
@@ -136,6 +135,12 @@ namespace ERS
             if (!keyboard.IsKeyDown(Keys.K))
                 discardPile.Layout = Layout.Deck;
             else discardPile.Layout = Layout.Hand;
+
+            if (mouse.X >= 580 && mouse.X < 595 && mouse.Y >= 2 && mouse.Y < 15 &&
+                mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released && players[whosTurn] is Human)
+            {
+                players[whosTurn].HasFinishedTurn = true;
+            }
         }
 
         #region Gameplay Methods
@@ -189,16 +194,15 @@ namespace ERS
                 }
                 if (!gameIsOver && gameStarted)
                 {
-                    foreach (var player in players)
-                    {
-                        if (player is Human)
+                    if (players[whosTurn] is Human)
+                    {                            
+                        Clickable.Update();
+                        var card = players[whosTurn].Hand.GetClickedCard();
+                        if (card != null)
                         {
-                            Clickable.Update();
-                            var card = player.Hand.GetClickedCard();
-                            if (card != null)
-                            { card.DrawOutLine(); }
+                            card.Selected = true; 
                         }
-                    }
+                     }
                 }
                 //if gameIsOver, this restarts it
                 else if (CanProceed())
@@ -341,7 +345,9 @@ namespace ERS
         //Lets the player play a card(s) if they choose.
         private void PlayCard()
         {
-                //hasthought = true here or something
+            //hasthought = true here or something
+            if (players[whosTurn] is CPU)
+            {
                 players[whosTurn].HasFinishedTurn = false;
                 players[whosTurn].HasPlayedCard = true;
                 lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
@@ -359,6 +365,25 @@ namespace ERS
                 }
                 else
                     players[whosTurn].HasFinishedTurn = true;
+            }
+            else
+            {
+                players[whosTurn].HasFinishedTurn = false;
+                players[whosTurn].HasPlayedCard = true;
+                lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
+                if (lastPlay != null)
+                {
+                    //If the chosen card to play was for the table, then equip it.
+                    if (lastPlay.CType == CardType.Schofield || lastPlay.CType == CardType.Winchester || lastPlay.CType == CardType.Mustang ||
+                        lastPlay.CType == CardType.Remington || lastPlay.CType == CardType.RevCarabine || lastPlay.CType == CardType.Scope ||
+                        lastPlay.CType == CardType.Barrel)
+                        EquipCard();
+                    //Otherwise, the card goes to the discards.
+                    else
+                        AddVisual(new TravelingCard(players[whosTurn].Hand, lastPlay.Index, discardPile, speed, CardState.FaceUp, 0));
+                    WriteCardToChat(players[whosTurn], lastPlay.Who, lastPlay.CType);
+                }
+            }
         }
 
         //Finishes the player's turn by discarding extras, then changes the turn.
@@ -734,7 +759,13 @@ namespace ERS
                 int distAway = players[whosTurn].GetDistanceAway(players, players[i]);
                 string distAwayStr = (distAway == -1) ? "" : distAway.ToString() + " away";
                 if (players[i].IsAlive)
+                {
                     MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, distAwayStr, new Vector2(players[i].Hand.Location.X - 90, players[i].Hand.Location.Y + 20), Color.White);
+                    if (players[i].PlayerSelected)
+                    {
+                    MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "Player Selected", new Vector2(players[i].Hand.Location.X - 80, players[i].Hand.Location.Y + 20), Color.White);
+                    }
+                }
                 for (int j = 0; j < players[i].Life; j++)
                     MainProgram.spriteBatch.Draw(MainProgram.game.bullet, new Rectangle((int)(players[i].Hand.Location.X - 140), (int)(players[i].Hand.Location.Y + 12 + (j * 12)), 32, 10), Color.White);
                 if (players[i].Life == 0)
@@ -788,6 +819,10 @@ namespace ERS
             MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(163-4, 7, 8, 2), Color.Black);
             MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(166-4, 4, 2, 8), Color.Black);
 
+            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "END TURN: ", new Vector2(500, 2), debug ? Color.Yellow : Color.White);
+            MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(580, 1, 14, 14), Color.White);
+            MainProgram.spriteBatch.Draw(MainProgram.game.arrow, new Rectangle(580, 3, 10, 10), Color.Black);
+
 
 
 
@@ -811,5 +846,18 @@ namespace ERS
         }
 
         #endregion
+
+        //public Card GetClickedPlayer()
+        //{
+
+        //    if (!Clickable.MouseClicked) return null;
+        //    foreach (var player in players)
+        //    {
+        //        if (player != null && player.Hand..Intersects(Clickable.MouseRectangle))
+        //            return card;
+        //    }
+        //    return null;
+
+        //}
     }
 }

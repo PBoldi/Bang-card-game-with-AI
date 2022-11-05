@@ -27,12 +27,14 @@ namespace ERS
         //The type of the card.
         protected CardType cardType;
 
-        protected bool outLine;
+        protected bool selected;
 
         public CardValue Value { get { return value; } }
         public Suit Suit { get { return suit; } }
         public CardType CType { get { return cardType; } }
         public Rectangle CardRectangle => new Rectangle((int)Position.X, (int)Position.Y, (int)cardSizeX, (int)cardSizeY);
+        public bool Selected { get { return selected; } set { selected = value; } }
+
 
         public Vector2 Position { get; private set; }
         public Card(CardType cType, CardValue cardValue, Suit cardSuit)
@@ -40,14 +42,14 @@ namespace ERS
             value = cardValue;
             suit = cardSuit;
             cardType = cType;
-            outLine = false;
+            selected = false;
         }
 
         public Card(Card old)
         {
             value = old.value;
             suit = old.suit;
-            outLine = false;
+            selected = false;
         }
 
         //Returns a string with the suit and value.
@@ -140,7 +142,7 @@ namespace ERS
         //Draws the card in the specified position relative to the position.
         public void Draw(Point location, bool drawText)
         {
-            Color color = outLine ? Color.Red : Color.White;
+            Color color = selected ? Color.Red : Color.White;
             Position = new Vector2(location.X, location.Y );
             MainProgram.spriteBatch.Draw(MainProgram.game.card, CardRectangle, color);
             if (drawText)
@@ -159,11 +161,7 @@ namespace ERS
                         DrawTextOnCard(MainProgram.game.spades, location);
                         break;
                 }
-            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, outLine.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
-        }
-        public void DrawOutLine()
-        {
-            outLine = !outLine;
+            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, selected.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
         }
 
         //Draws the value and suit of the card correctly positioned in the center of the card.

@@ -406,8 +406,15 @@ namespace ERS
             if (!Clickable.MouseClicked) return null;
             foreach (var card in cards)
             {
-                if ( card != null && card.CardRectangle.Intersects(Clickable.MouseRectangle))
+                if (card != null)
+                { card.Selected = false; }
+            }
+            foreach (var card in cards)
+            {
+                if (card != null && card.CardRectangle.Intersects(Clickable.MouseRectangle))
+                {
                     return card;
+                }
             }
             return null;
         
