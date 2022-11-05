@@ -9,7 +9,7 @@ namespace ERS
     /// </summary>
     public class BangGame : Microsoft.Xna.Framework.Game
     {
-        public const int SCREEN_HEIGHT = 693, SCREEN_WIDTH = 860;
+        public const int SCREEN_HEIGHT = 900, SCREEN_WIDTH = 1200;
         public Color defaultColor = Color.ForestGreen;
 
         GraphicsDeviceManager graphics;

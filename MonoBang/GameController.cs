@@ -58,7 +58,7 @@ namespace ERS
             
             players = new Player[] { new CPU("Calamity Janet", false, new Point(200, 40)), new CPU("Willy the Kid", true, new Point(200, 120)), 
                 new CPU("Black Jack", true, new Point(200, 200)), new CPU("Lucky Duke", true, new Point(200, 280)), new CPU("Rose Doolan", false, new Point(200, 360)),
-                new CPU("Paul Regret", true, new Point(200, 440)) /*new CPU("El Gringo", true, new Point(200, 540))*/ };
+                new CPU("Paul Regret", true, new Point(200, 440)), new Human("El Gringo", true, new Point(200, 540)) };
 
             RestartGame();
         }
