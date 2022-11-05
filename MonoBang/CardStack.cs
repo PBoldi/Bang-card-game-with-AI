@@ -329,13 +329,14 @@ namespace ERS
         //Lets the user move the cardstack.
         public override void Update(MouseState mouse, MouseState oldMouse)
         {
-            if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released && size > 0 && new Rectangle((int)TopLeft.X, (int)TopLeft.Y,(int) Card.cardSizeX + (int)(location.X - TopLeft.X) + ((CardStack.SPACE_BETWEEN_CARDS + (int)Card.cardSizeX) * (layout == Layout.Hand ? size - 1 : 0)), (int)Card.cardSizeY + (int)(location.Y - TopLeft.Y)).Contains(new Point(oldMouse.X, oldMouse.Y)))
-                selected = true;
-            if (mouse.LeftButton == ButtonState.Released)
-                selected = false;
+            //if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released && size > 0 
+            //    && new Rectangle((int)TopLeft.X, (int)TopLeft.Y,(int) Card.cardSizeX + (int)(location.X - TopLeft.X) + ((CardStack.SPACE_BETWEEN_CARDS + (int)Card.cardSizeX) * (layout == Layout.Hand ? size - 1 : 0)), (int)Card.cardSizeY + (int)(location.Y - TopLeft.Y)).Contains(new Point(oldMouse.X, oldMouse.Y)))
+            //    selected = true;
+            //if (mouse.LeftButton == ButtonState.Released)
+            //    selected = false;
 
-            if (selected && mouse.LeftButton == ButtonState.Pressed && size >= 0 && new Rectangle((int)TopLeft.X, (int)TopLeft.Y, (int)Card.cardSizeX + (int)(location.X - TopLeft.X) + ((CardStack.SPACE_BETWEEN_CARDS + (int) Card.cardSizeX) * (layout == Layout.Hand ? size - 1 : 0)), (int)Card.cardSizeY + (int)(location.Y - TopLeft.Y)).Contains(new Point(oldMouse.X, oldMouse.Y)))
-                Move(mouse.X - oldMouse.X, mouse.Y - oldMouse.Y);
+            //if (selected && mouse.LeftButton == ButtonState.Pressed && size >= 0 && new Rectangle((int)TopLeft.X, (int)TopLeft.Y, (int)Card.cardSizeX + (int)(location.X - TopLeft.X) + ((CardStack.SPACE_BETWEEN_CARDS + (int) Card.cardSizeX) * (layout == Layout.Hand ? size - 1 : 0)), (int)Card.cardSizeY + (int)(location.Y - TopLeft.Y)).Contains(new Point(oldMouse.X, oldMouse.Y)))
+            //    Move(mouse.X - oldMouse.X, mouse.Y - oldMouse.Y);
         }
 
         //Draws all the values of the cards to the screen.

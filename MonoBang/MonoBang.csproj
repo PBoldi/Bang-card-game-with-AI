@@ -49,6 +49,7 @@
     <Compile Include="Card.cs" />
     <Compile Include="CardStack.cs" />
     <Compile Include="ChatBox.cs" />
+    <Compile Include="Clickable.cs" />
     <Compile Include="Draggable.cs" />
     <Compile Include="BangGame.cs" />
     <Compile Include="GameController.cs" />

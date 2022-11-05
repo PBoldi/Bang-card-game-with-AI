@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -29,7 +30,9 @@ namespace ERS
         public CardValue Value { get { return value; } }
         public Suit Suit { get { return suit; } }
         public CardType CType { get { return cardType; } }
+        public Rectangle CardRectangle => new Rectangle((int)Position.X, (int)Position.Y, (int)cardSizeX, (int)cardSizeY);
 
+        public Vector2 Position { get; set; }
         public Card(CardType cType, CardValue cardValue, Suit cardSuit)
         {
             value = cardValue;
@@ -133,7 +136,8 @@ namespace ERS
         //Draws the card in the specified position relative to the position.
         public void Draw(Point location, bool drawText)
         {
-            MainProgram.spriteBatch.Draw(MainProgram.game.card, new Rectangle(location.X, location.Y, (int)cardSizeX, (int)cardSizeY), Color.White);
+            Position = new Vector2(location.X, location.Y );
+            MainProgram.spriteBatch.Draw(MainProgram.game.card, CardRectangle, Color.White);
             if (drawText)
                 switch (suit)
                 {
