@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 
 using System.Collections.Generic;
 using System;
+using MonoBang;
 
 //For Bang.
 namespace ERS
@@ -184,6 +185,19 @@ namespace ERS
                         chat.Write(GetLivingPlayers()[0].Name + " has won the game!!!");
                         betweenGamesTimer = 240;
                         SendAllCardsToPile();
+                    }
+                }
+                if (!gameIsOver && gameStarted)
+                {
+                    foreach (var player in players)
+                    {
+                        if (player is Human)
+                        {
+                            Clickable.Update();
+                            var card = player.Hand.GetClickedCard();
+                            if (card != null)
+                            { card.DrawOutLine(); }
+                        }
                     }
                 }
                 //if gameIsOver, this restarts it

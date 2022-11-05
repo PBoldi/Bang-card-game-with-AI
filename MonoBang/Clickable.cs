@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ERS;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace MonoBang
 
         public static void Update()
         {
-
             MouseClicked = (Mouse.GetState().LeftButton == ButtonState.Pressed) && (_lastMouseState.LeftButton == ButtonState.Released);
+            _lastMouseState = Mouse.GetState();
             MouseRectangle = new Rectangle(_lastMouseState.X, _lastMouseState.Y, 1, 1);
         }
     }

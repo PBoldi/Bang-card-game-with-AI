@@ -27,23 +27,27 @@ namespace ERS
         //The type of the card.
         protected CardType cardType;
 
+        protected bool outLine;
+
         public CardValue Value { get { return value; } }
         public Suit Suit { get { return suit; } }
         public CardType CType { get { return cardType; } }
         public Rectangle CardRectangle => new Rectangle((int)Position.X, (int)Position.Y, (int)cardSizeX, (int)cardSizeY);
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position { get; private set; }
         public Card(CardType cType, CardValue cardValue, Suit cardSuit)
         {
             value = cardValue;
             suit = cardSuit;
             cardType = cType;
+            outLine = false;
         }
 
         public Card(Card old)
         {
             value = old.value;
             suit = old.suit;
+            outLine = false;
         }
 
         //Returns a string with the suit and value.
@@ -136,8 +140,9 @@ namespace ERS
         //Draws the card in the specified position relative to the position.
         public void Draw(Point location, bool drawText)
         {
+            Color color = outLine ? Color.Red : Color.White;
             Position = new Vector2(location.X, location.Y );
-            MainProgram.spriteBatch.Draw(MainProgram.game.card, CardRectangle, Color.White);
+            MainProgram.spriteBatch.Draw(MainProgram.game.card, CardRectangle, color);
             if (drawText)
                 switch (suit)
                 {
@@ -154,6 +159,11 @@ namespace ERS
                         DrawTextOnCard(MainProgram.game.spades, location);
                         break;
                 }
+            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, outLine.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
+        }
+        public void DrawOutLine()
+        {
+            outLine = !outLine;
         }
 
         //Draws the value and suit of the card correctly positioned in the center of the card.

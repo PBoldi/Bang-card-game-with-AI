@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using MonoBang;
 
 namespace ERS
 {
@@ -397,6 +398,19 @@ namespace ERS
                 }
 
             if (showSize) MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, size.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
+        }
+
+        public Card GetClickedCard()
+        {
+
+            if (!Clickable.MouseClicked) return null;
+            foreach (var card in cards)
+            {
+                if ( card != null && card.CardRectangle.Intersects(Clickable.MouseRectangle))
+                    return card;
+            }
+            return null;
+        
         }
     }
 }

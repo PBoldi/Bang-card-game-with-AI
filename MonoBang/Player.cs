@@ -44,7 +44,7 @@ namespace ERS
 
         public bool HasThought { get { return hasThought; } set { hasThought = value; } }
 
-        public static int TABLECARDS_OFFSET = 290;//360;
+        public static int TABLECARDS_OFFSET = 500;//360;
 
         public Player(string newName, Point newLocation)
         {
