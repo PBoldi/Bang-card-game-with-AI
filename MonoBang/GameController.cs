@@ -372,9 +372,9 @@ namespace ERS
             else
             {
                 players[whosTurn].HasFinishedTurn = false;
-                players[whosTurn].HasPlayedCard = true;
                 if (players[whosTurn].Hand.GetSelectedCard() != null && playcard) 
                 {
+                    players[whosTurn].HasPlayedCard = true;
                     lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
                         if (lastPlay != null)
                         {

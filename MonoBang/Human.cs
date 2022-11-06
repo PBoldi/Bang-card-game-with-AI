@@ -38,14 +38,26 @@ namespace ERS
                 return null;
             var card = this.hand.GetSelectedCard();
             int index;
+            hand.Contains(card, out index);
             if (card != null)
             {
-                if (card.CType == CardType.Beer && life < maxLife)
-                { 
-                    hand.Contains(card, out index);
-                    return new PlayCard(index, null, card);
+
+                switch (card.CType)
+                {
+                    case CardType.Beer:
+                        return life < maxLife ? new PlayCard(index, null, card) : null;
+                    case CardType.Indians:
+                    //    if (life < maxLife)
+                    //        return new PlayCard(index, null, card);
+                    //case CardType.Indians:
+                    default:
+                        return new PlayCard(index, null, hand[index]);
                 }
+                
+
+                
             }
+           
             //Next steps:
 
             /* Think of how the player can take several seconds (calling this method over and over)
