@@ -372,9 +372,9 @@ namespace ERS
             else
             {
                 players[whosTurn].HasFinishedTurn = false;
+                players[whosTurn].HasPlayedCard = true;
                 if (players[whosTurn].Hand.GetSelectedCard() != null && playcard) 
                 {
-                    players[whosTurn].HasPlayedCard = true;
                     lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
                         if (lastPlay != null)
                         {
@@ -388,8 +388,8 @@ namespace ERS
                                 AddVisual(new TravelingCard(players[whosTurn].Hand, lastPlay.Index, discardPile, speed, CardState.FaceUp, 0));
                             WriteCardToChat(players[whosTurn], lastPlay.Who, lastPlay.CType);
                         }
+                    playcard = false;
                 }
-                playcard = false;
             }
         }
 
