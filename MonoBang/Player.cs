@@ -26,7 +26,7 @@ namespace ERS
                                     //The role of the Player
         protected CharacterRole role = CharacterRole.None;
         protected bool playerSelected;
-
+        protected Rectangle playerRectangle;
         public int MaxLife { get { return maxLife; } set { maxLife = value; } }
         public int Life { get { return life; } set { life = value; } }
         public CardStack Hand { get { return hand; } }
@@ -46,6 +46,8 @@ namespace ERS
         public bool PlayerSelected { get { return playerSelected; } set { playerSelected = value; } }
 
         public static int TABLECARDS_OFFSET = 500;//360;
+        
+        public Rectangle PlayerRectangle { get { return playerRectangle; } }
 
         public Player(string newName, Point newLocation)
         {
@@ -54,6 +56,7 @@ namespace ERS
             tableCards = new CardStack(newLocation.X + TABLECARDS_OFFSET, newLocation.Y, Layout.Hand);
             genderStr = "their";
             playerSelected = false;
+            playerRectangle = new Rectangle(newLocation.X - 140, newLocation.Y -4, 32, 10);
         }
 
         public Player(string newName, bool isMale, Point newLocation)
@@ -65,6 +68,8 @@ namespace ERS
                 genderStr = "his";
             else genderStr = "her";
             playerSelected = false;
+            playerRectangle = new Rectangle(newLocation.X - 140, newLocation.Y -4, 32, 10);
+
         }
 
         public void Update(MouseState mouse, MouseState oldMouse)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using MonoBang;
 using System.Threading;
+using System.Reflection;
 
 //For Bang.
 namespace ERS
@@ -205,6 +206,7 @@ namespace ERS
                     {                            
                         Clickable.Update();
                         players[whosTurn].Hand.GetClickedCard();
+                        SelectPlayer();
                      }
                 }
                 //if gameIsOver, this restarts it
@@ -768,15 +770,16 @@ namespace ERS
                 if (players[i].IsAlive)
                 {
                     MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, distAwayStr, new Vector2(players[i].Hand.Location.X - 90, players[i].Hand.Location.Y + 20), Color.White);
-                    if (players[i].PlayerSelected)
-                    {
-                    MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "Player Selected", new Vector2(players[i].Hand.Location.X - 80, players[i].Hand.Location.Y + 20), Color.White);
-                    }
                 }
                 for (int j = 0; j < players[i].Life; j++)
                     MainProgram.spriteBatch.Draw(MainProgram.game.bullet, new Rectangle((int)(players[i].Hand.Location.X - 140), (int)(players[i].Hand.Location.Y + 12 + (j * 12)), 32, 10), Color.White);
                 if (players[i].Life == 0)
                     MainProgram.spriteBatch.Draw(MainProgram.game.bullet, new Rectangle((int)(players[i].Hand.Location.X - 140), (int)(players[i].Hand.Location.Y + 12), 32, 10), Color.Black);
+
+                //if (players[i].PlayerSelected)
+                //{ MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "Selected Player", new Vector2(players[i].Hand.Location.X - 140, players[i].Hand.Location.Y - 20), Color.White); }
+
+
             }
 
             //who's turn arrow
@@ -859,17 +862,41 @@ namespace ERS
 
         #endregion
 
-        //public Card GetClickedPlayer()
-        //{
+        public void SelectPlayer()
+        {
 
-        //    if (!Clickable.MouseClicked) return null;
-        //    foreach (var player in players)
-        //    {
-        //        if (player != null && player.Hand..Intersects(Clickable.MouseRectangle))
-        //            return card;
-        //    }
-        //    return null;
+            if (!Clickable.MouseClicked) return;
+            foreach (var player in players)
+            {
+                if (player != null && player.PlayerRectangle.Intersects(Clickable.MouseRectangle))
+                {
+                    SetPlayerSelectedNull();
+                    player.PlayerSelected = true;
+                    chat.Write(player.Name + " is selected. "+player.PlayerSelected);
 
-        //}
+                    return;
+                }
+            }
+            return;
+        }
+        public Player GetSelectedPlayer()
+        {
+            foreach (var player in players)
+            {
+                if (player != null && player.PlayerSelected)
+                {
+                    return player;
+                }
+            }
+            return null;
+        }
+        public void SetPlayerSelectedNull()
+        {
+            foreach (var player in players)
+            {
+                if (player != null)
+                { player.PlayerSelected = false; }
+            }
+        }
     }
 }

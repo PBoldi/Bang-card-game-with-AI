@@ -161,7 +161,7 @@ namespace ERS
                         DrawTextOnCard(MainProgram.game.spades, location);
                         break;
                 }
-            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, selected.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
+            //MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, selected.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
         }
 
         //Draws the value and suit of the card correctly positioned in the center of the card.
