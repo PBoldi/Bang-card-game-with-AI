@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -35,7 +36,16 @@ namespace ERS
         {
             if (players == null || players.Length == 0)
                 return null;
-
+            var card = this.hand.GetSelectedCard();
+            int index;
+            if (card != null)
+            {
+                if (card.CType == CardType.Beer && life < maxLife)
+                { 
+                    hand.Contains(card, out index);
+                    return new PlayCard(index, null, card);
+                }
+            }
             //Next steps:
 
             /* Think of how the player can take several seconds (calling this method over and over)

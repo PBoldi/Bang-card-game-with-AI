@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using MonoBang;
+using System.Threading;
 
 //For Bang.
 namespace ERS
@@ -29,7 +30,7 @@ namespace ERS
         ChatBox chat; //The chatbox at the bottom of the screen.
 
         //If the game has started and if the game is paused.
-        bool gameStarted = false, paused = false, gameIsOver = false;
+        bool gameStarted = false, paused = false, gameIsOver = false, playcard = false;
         //Shows debug text, like deck size.
         public static bool debug = false;
         //True if the deck has been reshuffled.
@@ -136,10 +137,16 @@ namespace ERS
                 discardPile.Layout = Layout.Deck;
             else discardPile.Layout = Layout.Hand;
 
-            if (mouse.X >= 580 && mouse.X < 595 && mouse.Y >= 2 && mouse.Y < 15 &&
+            if (mouse.X >= 780 && mouse.X < 795 && mouse.Y >= 2 && mouse.Y < 15 &&
                 mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released && players[whosTurn] is Human)
             {
                 players[whosTurn].HasFinishedTurn = true;
+                players[whosTurn].Hand.SetSelectedNull();
+            }
+            if (mouse.X >= 680 && mouse.X < 695 && mouse.Y >= 2 && mouse.Y < 15 &&
+                mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released && players[whosTurn] is Human)
+            {
+                playcard = true;
             }
         }
 
@@ -197,11 +204,7 @@ namespace ERS
                     if (players[whosTurn] is Human)
                     {                            
                         Clickable.Update();
-                        var card = players[whosTurn].Hand.GetClickedCard();
-                        if (card != null)
-                        {
-                            card.Selected = true; 
-                        }
+                        players[whosTurn].Hand.GetClickedCard();
                      }
                 }
                 //if gameIsOver, this restarts it
@@ -369,20 +372,24 @@ namespace ERS
             else
             {
                 players[whosTurn].HasFinishedTurn = false;
-                players[whosTurn].HasPlayedCard = true;
-                lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
-                if (lastPlay != null)
+                if (players[whosTurn].Hand.GetSelectedCard() != null && playcard) 
                 {
-                    //If the chosen card to play was for the table, then equip it.
-                    if (lastPlay.CType == CardType.Schofield || lastPlay.CType == CardType.Winchester || lastPlay.CType == CardType.Mustang ||
-                        lastPlay.CType == CardType.Remington || lastPlay.CType == CardType.RevCarabine || lastPlay.CType == CardType.Scope ||
-                        lastPlay.CType == CardType.Barrel)
-                        EquipCard();
-                    //Otherwise, the card goes to the discards.
-                    else
-                        AddVisual(new TravelingCard(players[whosTurn].Hand, lastPlay.Index, discardPile, speed, CardState.FaceUp, 0));
-                    WriteCardToChat(players[whosTurn], lastPlay.Who, lastPlay.CType);
+                    players[whosTurn].HasPlayedCard = true;
+                    lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
+                        if (lastPlay != null)
+                        {
+                            //If the chosen card to play was for the table, then equip it.
+                            if (lastPlay.CType == CardType.Schofield || lastPlay.CType == CardType.Winchester || lastPlay.CType == CardType.Mustang ||
+                                lastPlay.CType == CardType.Remington || lastPlay.CType == CardType.RevCarabine || lastPlay.CType == CardType.Scope ||
+                                lastPlay.CType == CardType.Barrel)
+                                EquipCard();
+                            //Otherwise, the card goes to the discards.
+                            else
+                                AddVisual(new TravelingCard(players[whosTurn].Hand, lastPlay.Index, discardPile, speed, CardState.FaceUp, 0));
+                            WriteCardToChat(players[whosTurn], lastPlay.Who, lastPlay.CType);
+                        }
                 }
+                playcard = false;
             }
         }
 
@@ -819,9 +826,14 @@ namespace ERS
             MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(163-4, 7, 8, 2), Color.Black);
             MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(166-4, 4, 2, 8), Color.Black);
 
-            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "END TURN: ", new Vector2(500, 2), debug ? Color.Yellow : Color.White);
-            MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(580, 1, 14, 14), Color.White);
-            MainProgram.spriteBatch.Draw(MainProgram.game.arrow, new Rectangle(580, 3, 10, 10), Color.Black);
+
+            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "Play Card: ", new Vector2(620, 2), Color.White);
+            MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(680, 1, 14, 14), Color.Red);
+            MainProgram.spriteBatch.Draw(MainProgram.game.arrow, new Rectangle(680, 3, 10, 10), Color.Black);
+
+            MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "END TURN: ", new Vector2(720, 2), Color.White);
+            MainProgram.spriteBatch.Draw(MainProgram.game.pixel, new Rectangle(780, 1, 14, 14), Color.White);
+            MainProgram.spriteBatch.Draw(MainProgram.game.arrow, new Rectangle(780, 3, 10, 10), Color.Black);
 
 
 

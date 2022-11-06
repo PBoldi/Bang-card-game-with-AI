@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoBang;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace ERS
 {
@@ -47,7 +48,7 @@ namespace ERS
         #region Constructors
 
         public CardStack(int x, int y, bool newDeck = false)
-            :base(x, y)
+            : base(x, y)
         {
             cards = new Card[DECK_SIZE];
             if (newDeck)
@@ -141,7 +142,7 @@ namespace ERS
                 {
                     cards[i] = new Card((CardType)currentType, (CardValue)(i - currentSuit * 13), (Suit)currentSuit);
                     currentType++;
-                    if (currentType > 1) 
+                    if (currentType > 1)
                         currentType = 0;
                 }
                 currentSuit++;
@@ -180,6 +181,15 @@ namespace ERS
         {
             for (int i = 0; i < size; i++)
                 if (cards[i].CType == whichType)
+                { index = i; return true; }
+            index = -1;
+            return false;
+        }
+
+        public bool Contains(Card whichCard, out int index)
+        {
+            for (int i = 0; i < size; i++)
+                if (cards[i] == whichCard)
                 { index = i; return true; }
             index = -1;
             return false;
@@ -286,7 +296,7 @@ namespace ERS
         {
             if (size == 0)
                 return null;
-            
+
             Card top = RemoveCard(size - 1);
             return top;
         }
@@ -391,7 +401,7 @@ namespace ERS
                     cardRect.X = curX;
                     cardRect.Y = curY;
                     if (face == CardState.FaceDown)
-                        MainProgram.spriteBatch.Draw(MainProgram.game.faceDownCard, new Rectangle(curX, curY, (int)Card.cardSizeX, (int) Card.cardSizeY), Color.White);
+                        MainProgram.spriteBatch.Draw(MainProgram.game.faceDownCard, new Rectangle(curX, curY, (int)Card.cardSizeX, (int)Card.cardSizeY), Color.White);
                     else
                         cards[i].Draw(new Point(curX, curY), true);
                     curX += ((int)Card.cardSizeX + SPACE_BETWEEN_CARDS);
@@ -400,24 +410,41 @@ namespace ERS
             if (showSize) MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, size.ToString(), new Vector2(location.X, location.Y + (float)Card.cardSizeY), Color.White);
         }
 
-        public Card GetClickedCard()
+        public void GetClickedCard()
         {
 
-            if (!Clickable.MouseClicked) return null;
-            foreach (var card in cards)
-            {
-                if (card != null)
-                { card.Selected = false; }
-            }
+            if (!Clickable.MouseClicked) return;
+
             foreach (var card in cards)
             {
                 if (card != null && card.CardRectangle.Intersects(Clickable.MouseRectangle))
+                {
+                    SetSelectedNull();
+                    card.Selected = true;
+                    return;
+                }
+            }
+            return;
+
+        }
+        public Card GetSelectedCard()
+        {
+            foreach (var card in cards)
+            {
+                if (card != null && card.Selected)
                 {
                     return card;
                 }
             }
             return null;
-        
+        }
+        public void SetSelectedNull()
+        {
+            foreach (var card in cards)
+            {
+                if (card != null)
+                { card.Selected = false; }
+            }
         }
     }
 }
