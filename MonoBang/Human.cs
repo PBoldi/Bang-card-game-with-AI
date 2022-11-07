@@ -38,18 +38,26 @@ namespace ERS
                 return null;
             var card = this.hand.GetSelectedCard();
             int index;
+            Player whichPlayer = null;
             hand.Contains(card, out index);
+            foreach (var player in players)
+            {
+                if (player != null && player.PlayerSelected)
+                {
+                     whichPlayer = player;
+                }
+            }
             if (card != null)
             {
 
                 switch (card.CType)
                 {
                     case CardType.Beer:
-                        return life < maxLife ? new PlayCard(index, null, card) : null;
-                    case CardType.Indians:
-                    //    if (life < maxLife)
-                    //        return new PlayCard(index, null, card);
-                    //case CardType.Indians:
+                        return life < maxLife ? new PlayCard(index, whichPlayer, card) : null;
+
+
+                    case CardType.Bang:
+                        return new PlayCard(index, whichPlayer, card);
                     default:
                         return new PlayCard(index, null, hand[index]);
                 }

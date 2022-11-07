@@ -143,6 +143,7 @@ namespace ERS
             {
                 players[whosTurn].HasFinishedTurn = true;
                 players[whosTurn].Hand.SetSelectedNull();
+                SetPlayerSelectedNull();
             }
             if (mouse.X >= 680 && mouse.X < 695 && mouse.Y >= 2 && mouse.Y < 15 &&
                 mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released && players[whosTurn] is Human)
