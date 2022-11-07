@@ -314,12 +314,12 @@ namespace ERS
         {
             if (!players[whosTurn].HasDrawn) //Draw 2 cards.
                 DrawCards();
+            else if (players[whosTurn].HasFinishedTurn) //Discard extra cards at the end of the player's turn.
+                FinishAndChangeTurn();
             else if (!players[whosTurn].HasPlayedCard) //Option to play a card.
                 PlayCard();
             else if (lastPlay != null) //If the current player did play a card, the card takes its effect (other players may play).
                 HandlePlayCardEffects();
-            else if (players[whosTurn].HasFinishedTurn) //Discard extra cards at the end of the player's turn.
-                FinishAndChangeTurn();
         }
 
         //Draws cards for a player at the beginning of their turn.
