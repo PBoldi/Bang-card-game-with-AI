@@ -6,6 +6,7 @@ using System;
 using MonoBang;
 using System.Threading;
 using System.Reflection;
+using System.Linq;
 
 //For Bang.
 namespace ERS
@@ -208,6 +209,16 @@ namespace ERS
                         Clickable.Update();
                         players[whosTurn].Hand.GetClickedCard();
                         SelectPlayer();
+                        var c = players[whosTurn].Hand.GetSelectedCard();
+                        if (c != null && (c.CType == CardType.CatBalou || c.CType == CardType.Panic))
+                        {
+                            var chosenPlayer = GetSelectedPlayer();
+                            if (chosenPlayer != null)
+                            {
+                                chosenPlayer.Hand.GetClickedCard();
+                                chosenPlayer.TableCards.GetClickedCard();
+                            }
+                        }
                      }
                 }
                 //if gameIsOver, this restarts it
@@ -314,12 +325,12 @@ namespace ERS
         {
             if (!players[whosTurn].HasDrawn) //Draw 2 cards.
                 DrawCards();
+            else if (lastPlay != null) //If the current player did play a card, the card takes its effect (other players may play).
+                HandlePlayCardEffects();
             else if (players[whosTurn].HasFinishedTurn) //Discard extra cards at the end of the player's turn.
                 FinishAndChangeTurn();
             else if (!players[whosTurn].HasPlayedCard) //Option to play a card.
                 PlayCard();
-            else if (lastPlay != null) //If the current player did play a card, the card takes its effect (other players may play).
-                HandlePlayCardEffects();
         }
 
         //Draws cards for a player at the beginning of their turn.
@@ -377,6 +388,7 @@ namespace ERS
                 players[whosTurn].HasFinishedTurn = false;
                 if (players[whosTurn].Hand.GetSelectedCard() != null && playcard) 
                 {
+                    playcard = false;
                     players[whosTurn].HasPlayedCard = true;
                     lastPlay = players[whosTurn].Play(GetLivingPlayers(), PlayType.Normal); //When the player originally plays a card.
                         if (lastPlay != null)
@@ -391,7 +403,6 @@ namespace ERS
                                 AddVisual(new TravelingCard(players[whosTurn].Hand, lastPlay.Index, discardPile, speed, CardState.FaceUp, 0));
                             WriteCardToChat(players[whosTurn], lastPlay.Who, lastPlay.CType);
                         }
-                    playcard = false;
                 }
             }
         }
@@ -412,6 +423,7 @@ namespace ERS
 
                 }
                 int oldTurn = whosTurn;
+                playcard = false;
                 players[whosTurn].HasFinishedTurn = false;
                 players[whosTurn].HasPlayedCard = false;
                 players[whosTurn].HasDrawn = false;
@@ -776,10 +788,6 @@ namespace ERS
                     MainProgram.spriteBatch.Draw(MainProgram.game.bullet, new Rectangle((int)(players[i].Hand.Location.X - 140), (int)(players[i].Hand.Location.Y + 12 + (j * 12)), 32, 10), Color.White);
                 if (players[i].Life == 0)
                     MainProgram.spriteBatch.Draw(MainProgram.game.bullet, new Rectangle((int)(players[i].Hand.Location.X - 140), (int)(players[i].Hand.Location.Y + 12), 32, 10), Color.Black);
-
-                //if (players[i].PlayerSelected)
-                //{ MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "Selected Player", new Vector2(players[i].Hand.Location.X - 140, players[i].Hand.Location.Y - 20), Color.White); }
-
 
             }
 

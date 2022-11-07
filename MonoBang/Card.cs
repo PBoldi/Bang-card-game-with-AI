@@ -26,13 +26,14 @@ namespace ERS
         protected Suit suit;
         //The type of the card.
         protected CardType cardType;
+        protected Rectangle cardRectangle;
 
         protected bool selected;
 
         public CardValue Value { get { return value; } }
         public Suit Suit { get { return suit; } }
         public CardType CType { get { return cardType; } }
-        public Rectangle CardRectangle => new Rectangle((int)Position.X, (int)Position.Y, (int)cardSizeX, (int)cardSizeY);
+        public Rectangle CardRectangle { get { return cardRectangle; } set { cardRectangle = value; } }
         public bool Selected { get { return selected; } set { selected = value; } }
 
 

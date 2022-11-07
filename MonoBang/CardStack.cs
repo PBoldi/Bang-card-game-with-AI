@@ -384,6 +384,7 @@ namespace ERS
                 {
                     cardRect.X = curX;
                     cardRect.Y = curY;
+                    cards[i].CardRectangle = cardRect;
                     if (face == CardState.FaceDown)
                         MainProgram.spriteBatch.Draw(MainProgram.game.faceDownCard, new Rectangle(curX, curY, (int)Card.cardSizeX, (int)Card.cardSizeY), Color.White);
                     else if (i + 1 == size)
@@ -400,6 +401,7 @@ namespace ERS
                 {
                     cardRect.X = curX;
                     cardRect.Y = curY;
+                    cards[i].CardRectangle = cardRect;
                     if (face == CardState.FaceDown)
                         MainProgram.spriteBatch.Draw(MainProgram.game.faceDownCard, new Rectangle(curX, curY, (int)Card.cardSizeX, (int)Card.cardSizeY), Color.White);
                     else

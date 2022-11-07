@@ -47,6 +47,28 @@ namespace ERS
                      whichPlayer = player;
                 }
             }
+            Card otherCard = null;
+            int otherIndex = -1;
+            if (card.CType == CardType.CatBalou || card.CType == CardType.Panic)
+            {
+                foreach (var player in players)
+                {
+                    if (player != this)
+                    {
+                        if (player.Hand.GetSelectedCard() != null)
+                        {
+                            otherCard = player.Hand.GetSelectedCard();
+                            player.Hand.Contains(otherCard, out otherIndex);
+                        }
+                        else if (player.TableCards.GetSelectedCard() != null)
+                        {
+                            otherCard = player.TableCards.GetSelectedCard();
+                            player.TableCards.Contains(otherCard, out otherIndex);
+                        }
+
+                    }
+                }
+            }
             if (card != null)
             {
 
@@ -54,8 +76,10 @@ namespace ERS
                 {
                     case CardType.Beer:
                         return life < maxLife ? new PlayCard(index, whichPlayer, card) : null;
-
-
+                    case CardType.Panic:
+                        return otherIndex != -1 ? new PlayCard(index, whichPlayer,  card, otherCard, otherIndex) : null;
+                    case CardType.CatBalou:
+                        return otherIndex != -1 ? new PlayCard(index, whichPlayer, card, otherCard, otherIndex) : null;
                     case CardType.Bang:
                         return new PlayCard(index, whichPlayer, card);
                     default:
