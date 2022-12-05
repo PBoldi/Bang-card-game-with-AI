@@ -40,13 +40,13 @@ namespace ERS
 
         public Layout Layout { get { return layout; } set { layout = value; } }
 
+        public Card[] Cards { get { return cards; }}
         public Card this[int index] { get { return cards[index]; } }
         public int Size { get { return size; } }
 
         #endregion
 
         #region Constructors
-
         public CardStack(int x, int y, bool newDeck = false)
             : base(x, y)
         {
@@ -61,7 +61,10 @@ namespace ERS
             cards = new Card[DECK_SIZE];
             layout = cardLayout;
         }
-
+        public CardStack(Card[] cards): base(0,0)
+        {
+            this.cards = cards;
+        }
         /* Other constructors
         public CardStack(Card[] startingCards, int x, int y)
             :base(x, y)
@@ -448,5 +451,6 @@ namespace ERS
                 { card.Selected = false; }
             }
         }
+
     }
 }

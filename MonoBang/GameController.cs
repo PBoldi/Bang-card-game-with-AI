@@ -19,9 +19,9 @@ namespace ERS
         const int DEFAULT_SPEED = 45;
         int speed = DEFAULT_SPEED;
 
-        CardStack deck, discardPile;
+        public CardStack deck, discardPile;
         //All current players
-        Player[] players;
+        public Player[] players;
         //Pointer to the player who is the sheriff this round
         Player sheriff;
         //The visual of the cards moving.
@@ -41,7 +41,6 @@ namespace ERS
         bool autoPlay = false, nextPlayerCanBegin = false;
         //For cases when there is one card left in the deck and 2 need to be drawn.
         int cardsDrawn = 0;
-
         int thinkingTimer = 0, whosTurn = 0;
 
         //space between games
@@ -61,8 +60,9 @@ namespace ERS
             discardPile = new CardStack(BangGame.SCREEN_WIDTH - 105, 280);
             
             players = new Player[] { new Human("Calamity Janet", false, new Point(200, 40)), new CPU("Willy the Kid", true, new Point(200, 140)), 
-                new CPU("Black Jack", true, new Point(200, 240)), new CPU("Lucky Duke", true, new Point(200, 340)), new CPU("Rose Doolan", false, new Point(200, 440)),
-                new CPU("Paul Regret", true, new Point(200, 540)), new CPU("El Gringo", true, new Point(200, 640)) };
+                //new CPU("Black Jack", true, new Point(200, 240)), new CPU("Lucky Duke", true, new Point(200, 340)), new CPU("Rose Doolan", false, new Point(200, 440)),
+                //new CPU("Paul Regret", true, new Point(200, 540)), new CPU("El Gringo", true, new Point(200, 640))
+                };
 
             RestartGame();
         }
@@ -858,8 +858,8 @@ namespace ERS
                 MainProgram.spriteBatch.DrawString(MainProgram.game.smallFont, "Total Cards = " + 
                 (deck.Size + discardPile.Size + players[0].Hand.Size + players[1].Hand.Size + players[2].Hand.Size + players[3].Hand.Size), new Vector2(200, 26), Color.White);*/
             }
-            if (deck.Size + discardPile.Size + players[0].Hand.Size + players[1].Hand.Size + players[2].Hand.Size + players[3].Hand.Size + visualNum < 52)
-            { }
+            //if (deck.Size + discardPile.Size + players[0].Hand.Size + players[1].Hand.Size + players[2].Hand.Size + players[3].Hand.Size + visualNum < 52)
+            //{ }
 
 
             //if (paused)
@@ -907,5 +907,6 @@ namespace ERS
                 { player.PlayerSelected = false; }
             }
         }
+        
     }
 }
